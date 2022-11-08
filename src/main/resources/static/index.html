@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Feed</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/websocket.js"></script>
+    <script src="/request.js"></script>
+    <script src="/post.js"></script>
+    <script src="/feed.js"></script>
+</head>
+<body>
+<div>
+    <div class="row">
+        <div class="column">
+            <div id="post">
+                <div>
+                    <label for="author">Author:</label>
+                    <input id="author" type="text" placeholder="Write author here"/>
+                    <label for="title">Title:</label>
+                    <input id="title" type="text" placeholder="Write a post title here"/>
+                </div>
+                <div>
+                    <label for="content">Content:</label>
+                </div>
+                <div>
+                    <textarea id="content" cols="40" rows="5" placeholder="Write a post content here"></textarea>
+                </div>
+                <div>
+                    <button id="public" onclick="publicPost();">Public</button>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div>
+                <label for="follower">Follower:</label>
+                <input id="follower" type="text" placeholder="Follower"/>
+            </div>
+            <div>
+                <label for="authorToFollow">Follow author:</label>
+                <input id="authorToFollow" type="text" placeholder="Author"/>
+                <button id="follow" onclick="follow();">Follow</button>
+            </div>
+            <div>
+                <button id="connect" onclick="feed.connect();">Connect</button>
+                <button id="disconnect" onclick="feed.disconnect();" disabled>Disconnect</button>
+            </div>
+            <div id="feed">
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
