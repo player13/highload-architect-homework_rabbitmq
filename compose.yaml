@@ -1,0 +1,46 @@
+services:
+
+  feed_webapp:
+    build: .
+    restart: always
+    ports:
+      - "8080:8080"
+    links:
+      - postgres
+      - rabbit
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/feed
+      SPRING_DATASOURCE_USERNAME: feed_user
+      SPRING_DATASOURCE_PASSWORD: feed_secret
+      SPRING_RABBITMQ_HOST: rabbit
+    volumes:
+      - type: bind
+        source: ./wait-for-it.sh
+        target: /wait-for-it.sh
+        read_only: true
+
+  postgres:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: feed
+      POSTGRES_USER: feed_user
+      POSTGRES_PASSWORD: feed_secret
+    volumes:
+      - type: bind
+        source: ./init.sql
+        target: /docker-entrypoint-initdb.d/init.sql
+        read_only: true
+
+  rabbit:
+    image: rabbitmq:3-management
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+      - "61613:61613"
+    volumes:
+      - type: bind
+        source: ./rabbitmq_plugins.cfg
+        target: /etc/rabbitmq/enabled_plugins
+        read_only: true
